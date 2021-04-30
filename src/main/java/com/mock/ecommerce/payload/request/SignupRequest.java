@@ -4,10 +4,7 @@ import com.mock.ecommerce.model.Role;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,6 +15,7 @@ public class SignupRequest {
 
     @NotBlank(message = "Username cannot be empty")
     @Size(max = 20, message = "Username must contain less than 20 characters")
+    @Pattern(regexp = "^[a-zA-Z0-9]([._-](?![._-])|[a-zA-Z0-9]){3,18}[a-zA-Z0-9]$", message = "Username is invalid")
     @Indexed(unique = true)
     private String username;
 
@@ -42,7 +40,7 @@ public class SignupRequest {
     public SignupRequest() {
     }
 
-    public SignupRequest(@NotBlank(message = "Username cannot be empty") @Size(max = 20, message = "Username must contain less than 20 characters") String username, @NotBlank(message = "Email cannot be empty") @Size(max = 50, message = "Email must contain less than 50 characters") @Email(message = "Must be a valid Email address") String email, @NotBlank(message = "Password cannot be empty") @Size(max = 40, min = 6, message = "Password must contain between 6 and 40 characters") String password, @NotBlank(message = "First name cannot be empty") String firstName, @NotBlank(message = "Last name cannot be empty") String lastName, Set<String> roles) {
+    public SignupRequest(String username,  String email,  String password, String firstName, String lastName, Set<String> roles) {
         this.username = username;
         this.email = email;
         this.password = password;

@@ -4,10 +4,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -18,25 +15,16 @@ public class User implements Serializable {
     @Id
     private String id;
 
-    @NotBlank(message = "Username cannot be empty")
-    @Size(max = 20, message = "Username must contain less than 20 characters")
     @Indexed(unique = true)
     private String username;
 
-    @NotBlank(message = "Email cannot be empty")
-    @Size(max = 50, message = "Email must contain less than 50 characters")
-    @Email(message = "Must be a valid Email address")
     @Indexed(unique = true)
     private String email;
 
-    @NotBlank(message = "Password cannot be empty")
-    @Size(max = 40, min = 6, message = "Password must contain between 6 and 40 characters")
     private String password;
 
-    @NotBlank(message = "First name cannot be empty")
     private String firstName;
 
-    @NotBlank(message = "Last name cannot be empty")
     private String lastName;
 
     private String address;
@@ -51,7 +39,7 @@ public class User implements Serializable {
     public User() {
     }
 
-    public User(@NotBlank(message = "Username cannot be empty") @Size(max = 20, message = "Username must contain less than 20 characters") String username, @NotBlank(message = "Email cannot be empty") @Size(max = 50, message = "Email must contain less than 50 characters") @Email(message = "Must be a valid Email address") String email, @NotBlank(message = "Password cannot be empty") @Size(max = 40, min = 6, message = "Password must contain between 6 and 40 characters") String password, @NotBlank(message = "First name cannot be empty") String firstName, @NotBlank(message = "Last name cannot be empty") String lastName, String address, @NotNull(message = "Seller info cannot be null") boolean isSeller) {
+    public User(String username, String email, String password, String firstName, String lastName, String address, @NotNull(message = "Seller info cannot be null") boolean isSeller) {
         this.username = username;
         this.email = email;
         this.password = password;
@@ -73,7 +61,7 @@ public class User implements Serializable {
         return username;
     }
 
-    public void setUsername(@NotBlank @Size(max = 20) String username) {
+    public void setUsername(String username) {
         this.username = username;
     }
 
@@ -81,7 +69,7 @@ public class User implements Serializable {
         return email;
     }
 
-    public void setEmail(@NotBlank @Size(max = 50) @Email String email) {
+    public void setEmail(String email) {
         this.email = email;
     }
 
@@ -89,7 +77,7 @@ public class User implements Serializable {
         return password;
     }
 
-    public void setPassword(@NotBlank @Size(max = 40, min = 6) String password) {
+    public void setPassword(String password) {
         this.password = password;
     }
 

@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotEmpty;
+import java.time.Instant;
 import java.util.Date;
 
 @Document(collection = "product")
@@ -23,8 +24,7 @@ public class Product {
     private String description;
     @NotEmpty(message = "Must provide an image source")
     private String image;
-    @LastModifiedDate
-    private Date releaseDate;
+    private Date releaseDate  = Date.from(Instant.now());
 
     public Product() {
     }
