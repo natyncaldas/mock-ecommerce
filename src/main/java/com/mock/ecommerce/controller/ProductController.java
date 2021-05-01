@@ -22,27 +22,29 @@ public class  ProductController {
     ProductRepository productRepository;
 
     @GetMapping("/products")
-    public List<Product> getAllProducts(@RequestParam(required = false) String sort){
-        sort = (sort == null) ? "":sort;
-        return switch (sort) {
-            case "ASC" -> productRepository.findAll(Sort.by(Sort.Direction.ASC, "price"));
-            case "DESC" -> productRepository.findAll(Sort.by(Sort.Direction.DESC, "price"));
+    public List<Product> getAllProducts(@RequestParam(required = false) String sortBy, @RequestParam(required = false) String order){
+        order = (order == null) ? "":order;
+        sortBy = (sortBy == null) ? "name":sortBy;
+        return switch (order) {
+            case "ASC" -> productRepository.findAll(Sort.by(Sort.Direction.ASC, sortBy));
+            case "DESC" -> productRepository.findAll(Sort.by(Sort.Direction.DESC, sortBy));
             default -> productRepository.findAll();
         };
     }
 
     @GetMapping("/products/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable("id") String productId, @RequestParam(required = false) String sort) throws ResourceNotFoundException {
+    public ResponseEntity<Product> getProductById(@PathVariable("id") String productId) throws ResourceNotFoundException {
         Product product = productRepository.findById(productId).orElseThrow(() -> new ResourceNotFoundException("Product not found"));
         return ResponseEntity.ok(product);
     }
 
     @GetMapping("categories/{id}/products")
-    public List<Product> getProductsByCategory(@PathVariable("id") String categoryId, @RequestParam(required = false) String sort){
-        sort = (sort == null) ? "":sort;
-        return switch (sort) {
-            case "ASC" -> productRepository.findByCategoryId(categoryId, Sort.by(Sort.Direction.ASC, "price"));
-            case "DESC" -> productRepository.findByCategoryId(categoryId, Sort.by(Sort.Direction.DESC, "price"));
+    public List<Product> getProductsByCategory(@PathVariable("id") String categoryId, @RequestParam(required = false) String sortBy, @RequestParam(required = false) String order){
+        order = (order == null) ? "":order;
+        sortBy = (sortBy == null) ? "name":sortBy;
+        return switch (order) {
+            case "ASC" -> productRepository.findByCategoryId(categoryId, Sort.by(Sort.Direction.ASC, sortBy));
+            case "DESC" -> productRepository.findByCategoryId(categoryId, Sort.by(Sort.Direction.DESC, sortBy));
             default -> productRepository.findByCategoryId(categoryId, null);
         };
     }
