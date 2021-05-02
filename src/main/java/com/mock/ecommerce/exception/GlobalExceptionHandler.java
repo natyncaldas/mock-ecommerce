@@ -3,6 +3,7 @@ package com.mock.ecommerce.exception;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -17,6 +18,12 @@ import java.util.List;
 
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<?> accessDeniedException(AccessDeniedException ex, WebRequest request) {
+        ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getClass().getSimpleName(), "Access denied", null, request.getDescription(false));
+        return new ResponseEntity<>(errorDetails, HttpStatus.UNAUTHORIZED);
+    }
 
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<?> badCredentialsException(BadCredentialsException ex, WebRequest request) {

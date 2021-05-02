@@ -50,7 +50,7 @@ public class CategoryController {
 
     @DeleteMapping("/categories/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public Map<String, Boolean> deleteUserById(@PathVariable(value = "id") String id)
+    public Map<String, Boolean> deleteCategoryById(@PathVariable(value = "id") String id)
             throws ResourceNotFoundException {
         Category _category = categoryRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Category not found"));
 

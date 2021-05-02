@@ -3,10 +3,7 @@ package com.mock.ecommerce.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.time.Instant;
 import java.util.Date;
 
@@ -19,7 +16,9 @@ public class Review {
     private String text;
     @NotEmpty(message = "Must refer to a product")
     private String productId;
-    @NotEmpty(message = "Must provide a rating")
+    @NotEmpty(message = "Must be associated with a username")
+    private String username;
+    @NotNull(message = "Must provide a rating")
     @Min(value = 0, message = "Minimum rate is 0")
     @Max(value = 5, message = "Maximum rate is 5")
     private float rating;
@@ -28,8 +27,9 @@ public class Review {
     public Review() {
     }
 
-    public Review(String text, String productId, float rating) {
+    public Review(String text, String productId, String username, float rating) {
         this.text = text;
+        this.username = username;
         this.productId = productId;
         this.rating = rating;
     }
@@ -56,6 +56,14 @@ public class Review {
 
     public void setProductId(String productId) {
         this.productId = productId;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public float getRating() {

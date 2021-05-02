@@ -6,6 +6,7 @@ import com.mock.ecommerce.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -61,13 +62,15 @@ public class  ProductController {
         return productRepository.save(product);
     }
 
-    @DeleteMapping("/products/{id}")
-    @PreAuthorize("(hasRole('MODERATOR') and #product.sellerUsername == authentication.principal.username) or hasRole('ADMIN')")
-    public Map<String, Boolean> deleteProductById(@PathVariable(value = "id") String id, Product product)
+    //TODO **TEST** fix authentication by username
+    @DeleteMapping("users/{username}/products/{id}")
+    @PreAuthorize("(hasRole('MODERATOR') and #username == authentication.principal.username) or hasRole('ADMIN')")
+    public Map<String, Boolean> deleteProductById(@PathVariable(value = "id") String id, @PathVariable("username") String username)
             throws ResourceNotFoundException {
-        product = productRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
-
+        Product product = productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Product not found"));
+        if(!username.equals(product.getSellerUsername())){
+            throw new AccessDeniedException("Access Denied");
+        }
         productRepository.delete(product);
         Map<String, Boolean> response = new HashMap<>();
         response.put("deleted", Boolean.TRUE);
