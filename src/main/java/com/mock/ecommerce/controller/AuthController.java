@@ -72,10 +72,13 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) throws RepeatedCredentialsException {
-        roleRepository.deleteAll();
-        roleRepository.save(new Role(ERole.ROLE_ADMIN));
-        roleRepository.save(new Role(ERole.ROLE_MODERATOR));
-        roleRepository.save(new Role(ERole.ROLE_USER));
+        List<Role> repository = roleRepository.findAll();
+        if(repository.isEmpty()){
+            roleRepository.save(new Role(ERole.ROLE_ADMIN));
+            roleRepository.save(new Role(ERole.ROLE_MODERATOR));
+            roleRepository.save(new Role(ERole.ROLE_USER));
+        }
+        //roleRepository.deleteAll();
 
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
             throw new RepeatedCredentialsException("Username is already taken");
@@ -94,7 +97,7 @@ public class AuthController {
         Set<String> strRoles = signUpRequest.getRoles();
         Set<Role> roles = new HashSet<>();
 
-        if (strRoles == null) {
+        if (strRoles.isEmpty()) {
             Role userRole = roleRepository.findByName(ERole.ROLE_USER)
                     .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
             roles.add(userRole);
