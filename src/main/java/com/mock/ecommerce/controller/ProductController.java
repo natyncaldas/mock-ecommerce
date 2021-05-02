@@ -13,6 +13,7 @@ import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @CrossOrigin
 @RestController
@@ -38,7 +39,7 @@ public class  ProductController {
         return ResponseEntity.ok(product);
     }
 
-    @GetMapping("categories/{id}/products")
+    @GetMapping("/categories/{id}/products")
     public List<Product> getProductsByCategory(@PathVariable("id") String categoryId, @RequestParam(required = false) String sortBy, @RequestParam(required = false) String order){
         order = (order == null) ? "":order;
         sortBy = (sortBy == null) ? "name":sortBy;
@@ -47,6 +48,11 @@ public class  ProductController {
             case "DESC" -> productRepository.findByCategoryId(categoryId, Sort.by(Sort.Direction.DESC, sortBy));
             default -> productRepository.findByCategoryId(categoryId, null);
         };
+    }
+
+    @GetMapping("/sellers/{username}/products")
+    public List<Product> getProductBySeller(@PathVariable("username") String sellerUsername) throws ResourceNotFoundException {
+        return productRepository.findBySellerUsername(sellerUsername);
     }
 
     @PostMapping("/products")

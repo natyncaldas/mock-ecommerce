@@ -13,12 +13,15 @@ public class Category {
     @NotEmpty(message = "Category name cannot be empty")
     private String name;
 
+    @NotEmpty(message = "Must provide category icon")
+    private String icon;
+
     public Category() {
     }
 
-    public Category(String id, @NotEmpty(message = "Category name cannot be empty") String name) {
-        this.id = id;
+    public Category(String name, String icon) {
         this.name = name;
+        this.icon = icon;
     }
 
     public String getId() {
@@ -35,5 +38,13 @@ public class Category {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
     }
 }
