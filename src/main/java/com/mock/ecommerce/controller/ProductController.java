@@ -14,7 +14,6 @@ import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @CrossOrigin
 @RestController
@@ -63,7 +62,7 @@ public class  ProductController {
     }
 
     //TODO **TEST** fix authentication by username
-    @DeleteMapping("users/{username}/products/{id}")
+    @DeleteMapping("/users/{username}/products/{id}")
     @PreAuthorize("(hasRole('MODERATOR') and #username == authentication.principal.username) or hasRole('ADMIN')")
     public Map<String, Boolean> deleteProductById(@PathVariable(value = "id") String id, @PathVariable("username") String username)
             throws ResourceNotFoundException {

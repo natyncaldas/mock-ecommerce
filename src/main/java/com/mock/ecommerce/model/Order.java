@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.time.Instant;
 import java.util.Date;
 import java.util.Set;
 
@@ -15,17 +16,14 @@ public class Order {
     private String id;
     @NotEmpty(message = "Must be associated with an user")
     private String userId;
-    @NotNull(message = "Order must have at least (1) product")
     private Set<Product> products;
-    @CreatedDate
-    private Date date;
+    private Date date = Date.from(Instant.now());
 
     public Order() {
     }
 
-    public Order(@NotEmpty(message = "Must be associated with an user") String userId, @NotNull(message = "Order must have at least (1) product") Set<Product> products) {
+    public Order(String userId) {
         this.userId = userId;
-        this.products = products;
     }
 
     public String getId() {
@@ -44,11 +42,12 @@ public class Order {
         this.userId = userId;
     }
 
+
     public Set<Product> getProducts() {
         return products;
     }
 
-    public void setProducts(Set<Product> products) {
+    public void setProducts(@NotNull(message = "Order must have at least (1) product") Set<Product> products) {
         this.products = products;
     }
 

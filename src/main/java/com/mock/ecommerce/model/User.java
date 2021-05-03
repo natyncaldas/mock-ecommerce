@@ -39,7 +39,7 @@ public class User implements Serializable {
     public User() {
     }
 
-    public User(String username, String email, String password, String firstName, String lastName, String address, @NotNull(message = "Seller info cannot be null") boolean isSeller) {
+    public User(String username, String email, String password, String firstName, String lastName, String address, boolean isSeller) {
         this.username = username;
         this.email = email;
         this.password = password;
