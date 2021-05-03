@@ -1,6 +1,7 @@
 package com.mock.ecommerce.model;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotEmpty;
@@ -10,13 +11,14 @@ public class SellerRequest {
     @Id
     private String id;
     @NotEmpty(message = "Must be associated with an user")
+    @Indexed(unique = true)
     private String userId;
 
     public SellerRequest(){
 
     }
 
-    public SellerRequest(@NotEmpty(message = "Must be associated with an user") String userId) {
+    public SellerRequest(String userId) {
         this.userId = userId;
     }
 

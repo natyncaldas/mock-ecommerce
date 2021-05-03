@@ -2,10 +2,8 @@ package com.mock.ecommerce.controller;
 
 import com.mock.ecommerce.exception.ResourceNotFoundException;
 import com.mock.ecommerce.model.Order;
-import com.mock.ecommerce.model.Product;
 import com.mock.ecommerce.model.User;
 import com.mock.ecommerce.repository.OrderRepository;
-import com.mock.ecommerce.repository.ProductRepository;
 import com.mock.ecommerce.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
@@ -16,7 +14,6 @@ import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 @CrossOrigin
 @RestController
@@ -49,6 +46,7 @@ public class OrderController {
     }
 
     @DeleteMapping("/users/{userId}/orders/{id}")
+    @PreAuthorize("hasAnyRole('USER','MODERATOR', 'ADMIN') and #userId == authentication.principal.id")
     public Map<String, Boolean> deleteOrderById(@PathVariable(value = "id") String id, @PathVariable("userId") String userId)
             throws ResourceNotFoundException {
         Order order = orderRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Order not found"));
