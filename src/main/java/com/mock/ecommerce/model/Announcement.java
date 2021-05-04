@@ -6,17 +6,17 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import javax.validation.constraints.NotEmpty;
 
 @Document(collection = "annoucement")
-public class Annoucement {
+public class Announcement {
     @Id
     private String id;
     @NotEmpty(message = "Must provide an image")
     private String image;
     private String text;
 
-    public Annoucement() {
+    public Announcement() {
     }
 
-    public Annoucement(@NotEmpty(message = "Must provide an image") String image, String text) {
+    public Announcement(@NotEmpty(message = "Must provide an image") String image, String text) {
         this.image = image;
         this.text = text;
     }
